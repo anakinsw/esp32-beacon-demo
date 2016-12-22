@@ -111,35 +111,16 @@ static void gatts_event_handler(uint32_t event, void *param)
     switch (event) {
     case ESP_GATTS_REG_EVT:
         LOG_INFO("REGISTER_APP_EVT, status %d, gatt_if %d, app_id %d\n", p->reg.status, p->reg.gatt_if, p->reg.app_id);
-        gl_test.gatt_if = p->reg.gatt_if;
-        gl_test.service_id.is_primary = true;
-        gl_test.service_id.id.inst_id = 0x00;
-        gl_test.service_id.id.uuid.len = ESP_UUID_LEN_16;
-        gl_test.service_id.id.uuid.uuid.uuid16 = GATTS_SERVICE_UUID_TEST;
 
         esp_ble_gap_set_device_name(TEST_DEVICE_NAME);
         esp_ble_gap_config_adv_data(&test_adv_data);
 
-        esp_ble_gatts_create_service(gl_test.gatt_if, &gl_test.service_id, GATTS_NUM_HANDLE_TEST);
+        //esp_ble_gatts_create_service(gl_test.gatt_if, &gl_test.service_id, GATTS_NUM_HANDLE_TEST);
         break;
     case ESP_GATTS_READ_EVT: {
-        LOG_INFO("GATT_READ_EVT, conn_id %d, trans_id %d, handle %d\n", p->read.conn_id, p->read.trans_id, p->read.handle);
-        esp_gatt_rsp_t rsp;
-        memset(&rsp, 0, sizeof(esp_gatt_rsp_t));
-        rsp.attr_value.handle = p->read.handle;
-        rsp.attr_value.len = 4;
-        rsp.attr_value.value[0] = 0xde;
-        rsp.attr_value.value[1] = 0xed;
-        rsp.attr_value.value[2] = 0xbe;
-        rsp.attr_value.value[3] = 0xef;
-        esp_ble_gatts_send_response(p->read.conn_id, p->read.trans_id,
-                                    ESP_GATT_OK, &rsp);
         break;
     }
     case ESP_GATTS_WRITE_EVT: {
-        LOG_INFO("GATT_WRITE_EVT, conn_id %d, trans_id %d, handle %d\n", p->write.conn_id, p->write.trans_id, p->write.handle);
-        LOG_INFO("GATT_WRITE_EVT, value len %d, value %08x\n", p->write.len, *(uint32_t *)p->write.value);
-        esp_ble_gatts_send_response(p->write.conn_id, p->write.trans_id, ESP_GATT_OK, NULL);
         break;
     }
     case ESP_GATTS_EXEC_WRITE_EVT:
@@ -149,27 +130,10 @@ static void gatts_event_handler(uint32_t event, void *param)
         break;
     case ESP_GATTS_CREATE_EVT:
         LOG_INFO("CREATE_SERVICE_EVT, status %d, gatt_if %d,  service_handle %d\n", p->create.status, p->create.gatt_if, p->create.service_handle);
-        gl_test.service_handle = p->create.service_handle;
-        gl_test.char_uuid.len = ESP_UUID_LEN_16;
-        gl_test.char_uuid.uuid.uuid16 = GATTS_CHAR_UUID_TEST;
-
-        esp_ble_gatts_start_service(gl_test.service_handle);
-
-        esp_ble_gatts_add_char(gl_test.service_handle, &gl_test.char_uuid,
-                               ESP_GATT_PERM_READ | ESP_GATT_PERM_WRITE,
-                               ESP_GATT_CHAR_PROP_BIT_READ | ESP_GATT_CHAR_PROP_BIT_WRITE | ESP_GATT_CHAR_PROP_BIT_NOTIFY);
         break;
     case ESP_GATTS_ADD_INCL_SRVC_EVT:
         break;
     case ESP_GATTS_ADD_CHAR_EVT:
-        LOG_INFO("ADD_CHAR_EVT, status %d, gatt_if %d,  attr_handle %d, service_handle %d\n",
-                 p->add_char.status, p->add_char.gatt_if, p->add_char.attr_handle, p->add_char.service_handle);
-
-        gl_test.char_handle = p->add_char.attr_handle;
-        gl_test.descr_uuid.len = ESP_UUID_LEN_16;
-        gl_test.descr_uuid.uuid.uuid16 = ESP_GATT_UUID_CHAR_CLIENT_CONFIG;
-        esp_ble_gatts_add_char_descr(gl_test.service_handle, &gl_test.descr_uuid,
-                                     ESP_GATT_PERM_READ | ESP_GATT_PERM_WRITE);
         break;
     case ESP_GATTS_ADD_CHAR_DESCR_EVT:
         LOG_INFO("ADD_DESCR_EVT, status %d, gatt_if %d,  attr_handle %d, service_handle %d\n",
@@ -184,12 +148,6 @@ static void gatts_event_handler(uint32_t event, void *param)
     case ESP_GATTS_STOP_EVT:
         break;
     case ESP_GATTS_CONNECT_EVT:
-        LOG_INFO("SERVICE_START_EVT, conn_id %d, gatt_if %d, remote %02x:%02x:%02x:%02x:%02x:%02x:, is_conn %d\n",
-                 p->connect.conn_id, p->connect.gatt_if,
-                 p->connect.remote_bda[0], p->connect.remote_bda[1], p->connect.remote_bda[2],
-                 p->connect.remote_bda[3], p->connect.remote_bda[4], p->connect.remote_bda[5],
-                 p->connect.is_connected);
-        gl_test.conn_id = p->connect.conn_id;
         break;
     case ESP_GATTS_DISCONNECT_EVT:
     case ESP_GATTS_OPEN_EVT:
