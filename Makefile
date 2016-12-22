@@ -16,3 +16,6 @@ sdkconfig: sdkconfig.defaults
 
 menuconfig: sdkconfig
 defconfig: sdkconfig
+
+monitor:
+	screen /dev/tty.SLAB_USBtoUART 115200
