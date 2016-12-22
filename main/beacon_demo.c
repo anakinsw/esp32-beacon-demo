@@ -31,10 +31,6 @@
 #include "esp_bt_main.h"
 
 #define GATTS_SERVICE_UUID_TEST     0x00FF
-#define GATTS_CHAR_UUID_TEST        0xFF01
-#define GATTS_DESCR_UUID_TEST       0x3333
-#define APP_ID_TEST                 0x18
-#define GATTS_NUM_HANDLE_TEST       4
 #define TEST_DEVICE_NAME            "ESP_GATTS_DEMO"
 
 #define TEST_MANUFACTURER_DATA_LEN  0x19
