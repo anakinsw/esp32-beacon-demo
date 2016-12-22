@@ -37,7 +37,7 @@
 #define GATTS_NUM_HANDLE_TEST       4
 #define TEST_DEVICE_NAME            "ESP_GATTS_DEMO"
 
-#define TEST_MANUFACTURER_DATA_LEN  0x1a
+#define TEST_MANUFACTURER_DATA_LEN  0x19
 
 static uint8_t test_manufacturer[TEST_MANUFACTURER_DATA_LEN] = {
     0x4C, 0x00,     // # Company identifier code (0x004C == Apple)
@@ -51,8 +51,8 @@ static uint8_t test_manufacturer[TEST_MANUFACTURER_DATA_LEN] = {
 
 static esp_ble_adv_data_t test_adv_data = {
     .set_scan_rsp = false,
-    .include_name = true,
-    .include_txpower = true,
+    .include_name = false,
+    .include_txpower = false,
     .min_interval = 0x20,
     .max_interval = 0x40,
     .appearance = 0x00,

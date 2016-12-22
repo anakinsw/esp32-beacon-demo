@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := gatt_server_demos
+PROJECT_NAME := beacon-demo
 
 COMPONENT_ADD_INCLUDEDIRS := components/include
 
