@@ -76,21 +76,6 @@ static esp_ble_adv_params_t test_adv_params = {
     .adv_filter_policy = ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY,
 };
 
-struct gatts_test_inst {
-    uint16_t gatt_if;
-    uint16_t app_id;
-    uint16_t conn_id;
-    uint16_t service_handle;
-    esp_gatt_srvc_id_t service_id;
-    uint16_t char_handle;
-    esp_bt_uuid_t char_uuid;
-    esp_gatt_perm_t perm;
-    esp_gatt_char_prop_t property;
-    uint16_t descr_handle;
-    esp_bt_uuid_t descr_uuid;
-};
-static struct gatts_test_inst gl_test;
-
 static void gap_event_handler(uint32_t event, void *param)
 {
     LOG_ERROR("GAP_EVT, event %d\n", event);
@@ -114,8 +99,6 @@ static void gatts_event_handler(uint32_t event, void *param)
 
         esp_ble_gap_set_device_name(TEST_DEVICE_NAME);
         esp_ble_gap_config_adv_data(&test_adv_data);
-
-        //esp_ble_gatts_create_service(gl_test.gatt_if, &gl_test.service_id, GATTS_NUM_HANDLE_TEST);
         break;
     case ESP_GATTS_READ_EVT: {
         break;
